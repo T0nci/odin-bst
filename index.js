@@ -1,3 +1,16 @@
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+  if (node === null) {
+    return;
+  }
+  if (node.right !== null) {
+    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+  }
+  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+  if (node.left !== null) {
+    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+  }
+};
+
 class Node {
   constructor(data) {
     this.data = data;
@@ -62,9 +75,23 @@ function Tree(array) {
     }
   }
 
-  function assembleTree(arr) {}
+  function assembleTree(arr, start, end) {
+    if (start > end) return null;
+
+    const middle = Math.floor((start + end) / 2);
+
+    const node = new Node(arr[middle]);
+
+    node.left = assembleTree(arr, start, middle - 1);
+    node.right = assembleTree(arr, middle + 1, end);
+
+    return node;
+  }
 
   function buildTree(arr) {
+    if (!Array.isArray(arr) || arr.length < 1)
+      throw new Error("Tree factory function expects an array!");
+
     mergeSort(arr, 0, arr.length - 1, []);
 
     // Remove duplicates
@@ -73,12 +100,16 @@ function Tree(array) {
       return currArr;
     }, []);
 
-    assembleTree(cleanArr);
+    return assembleTree(cleanArr, 0, cleanArr.length - 1);
   }
 
   const root = buildTree(array);
-  return {};
+  return {
+    root,
+  };
 }
 
 const example = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const binarySearchTree = Tree(example);
+
+prettyPrint(binarySearchTree.root);
