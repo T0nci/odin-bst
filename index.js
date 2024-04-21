@@ -66,11 +66,14 @@ function Tree(array) {
 
   function buildTree(arr) {
     mergeSort(arr, 0, arr.length - 1, []);
-    console.log(arr);
 
     // Remove duplicates
+    const cleanArr = arr.reduce((currArr, val) => {
+      if (!currArr.includes(val)) currArr.push(val);
+      return currArr;
+    }, []);
 
-    assembleTree(arr);
+    assembleTree(cleanArr);
   }
 
   const root = buildTree(array);
