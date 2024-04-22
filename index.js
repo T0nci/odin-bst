@@ -104,12 +104,37 @@ function Tree(array) {
   }
 
   const root = buildTree(array);
+
+  function insert(value) {
+    let node = root;
+
+    while (node !== null) {
+      if (value < node.data) {
+        if (node.left === null) {
+          node.left = new Node(value);
+          return;
+        }
+        node = node.left;
+      } else if (node.right === null) {
+        node.right = new Node(value);
+        return;
+      } else {
+        node = node.right;
+      }
+    }
+  }
+
   return {
     root,
+    insert,
   };
 }
 
 const example = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const binarySearchTree = Tree(example);
 
+prettyPrint(binarySearchTree.root);
+binarySearchTree.insert(2);
+binarySearchTree.insert(21);
+binarySearchTree.insert(1200);
 prettyPrint(binarySearchTree.root);
