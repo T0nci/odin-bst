@@ -198,11 +198,75 @@ function Tree(array) {
     return null;
   }
 
+  function levelOrder(callback) {
+    const returnArray = [];
+    if (!callback || typeof callback !== "function") {
+      // eslint-disable-next-line no-param-reassign
+      callback = (node) => {
+        returnArray.push(node.data);
+      };
+    }
+
+    const q = [root];
+    let i = 0;
+
+    while (q[i] !== undefined) {
+      callback(q[i]);
+
+      if (q[i].left !== null) q.push(q[i].left);
+      if (q[i].right !== null) q.push(q[i].right);
+
+      i += 1;
+    }
+
+    if (returnArray.length > 0) return returnArray;
+
+    return true;
+  }
+
+  function levelOrderRecursive(callback, arr, q) {
+    if (!callback || typeof callback !== "function") {
+      // eslint-disable-next-line no-param-reassign
+      callback = (node) => {
+        arr.push(node.data);
+      };
+    }
+
+    if (!Array.isArray(arr)) {
+      // eslint-disable-next-line no-param-reassign
+      arr = [];
+    }
+
+    if (!Array.isArray(q)) {
+      // eslint-disable-next-line no-param-reassign
+      q = [root];
+    }
+
+    // Base case
+    if (q.length <= 0) {
+      if (arr.length > 0) return arr;
+
+      return true;
+    }
+
+    callback(q[0]);
+
+    if (q[0].left !== null) q.push(q[0].left);
+    if (q[0].right !== null) q.push(q[0].right);
+
+    q.shift();
+
+    // Recursive case
+    return levelOrderRecursive(callback, arr, q);
+  }
+
   return {
     root,
     insert,
     deleteItem,
     find,
+    levelOrder,
+    levelOrderRecursive,
   };
 }
 
@@ -224,3 +288,10 @@ console.log("--------------------------------------");
 
 console.log(binarySearchTree.find(21));
 console.log(binarySearchTree.find(9999));
+
+console.log(binarySearchTree.levelOrder());
+console.log(
+  binarySearchTree.levelOrderRecursive((node) => {
+    console.log(node.data);
+  }),
+);
