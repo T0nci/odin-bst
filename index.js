@@ -106,7 +106,7 @@ function Tree(array) {
   const root = buildTree(array);
 
   function insert(value) {
-    let node = this.root;
+    let node = root;
 
     while (node !== null) {
       if (value < node.data) {
@@ -125,7 +125,7 @@ function Tree(array) {
   }
 
   function deleteItem(value) {
-    let curr = this.root;
+    let curr = root;
     const prev = {
       node: null,
       left: false,
@@ -185,10 +185,24 @@ function Tree(array) {
     }
   }
 
+  function find(value) {
+    let node = root;
+
+    while (node !== null) {
+      if (value === node.data) return node;
+
+      if (value < node.data) node = node.left;
+      else node = node.right;
+    }
+
+    return null;
+  }
+
   return {
     root,
     insert,
     deleteItem,
+    find,
   };
 }
 
@@ -207,3 +221,6 @@ binarySearchTree.deleteItem(8);
 binarySearchTree.deleteItem(67);
 prettyPrint(binarySearchTree.root);
 console.log("--------------------------------------");
+
+console.log(binarySearchTree.find(21));
+console.log(binarySearchTree.find(9999));
