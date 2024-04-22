@@ -106,7 +106,7 @@ function Tree(array) {
   const root = buildTree(array);
 
   function insert(value) {
-    let node = root;
+    let node = this.root;
 
     while (node !== null) {
       if (value < node.data) {
@@ -124,17 +124,86 @@ function Tree(array) {
     }
   }
 
+  function deleteItem(value) {
+    let curr = this.root;
+    const prev = {
+      node: null,
+      left: false,
+    };
+
+    while (curr !== null) {
+      if (value === curr.data) {
+        if (curr.left === null && curr.right === null) {
+          // If no children
+          if (prev.left) {
+            prev.node.left = null;
+          } else {
+            prev.node.right = null;
+          }
+        } else if (curr.left === null) {
+          // If right child
+          if (prev.left) {
+            prev.node.left = curr.right;
+          } else {
+            prev.node.right = curr.right;
+          }
+        } else if (curr.right === null) {
+          // If left child
+          if (prev.left) {
+            prev.node.left = curr.left;
+          } else {
+            prev.node.right = curr.left;
+          }
+        } else {
+          // If both children
+
+          // Find the smallest number after our current number
+          prev.node = curr.right;
+          while (prev.node.left !== null) {
+            prev.node = prev.node.left;
+          }
+
+          // Store it, delete it, replace the current number for deletion
+          // with it
+          const replacementNodeData = prev.node.data;
+          this.deleteItem(replacementNodeData);
+          curr.data = replacementNodeData;
+        }
+
+        return;
+      }
+
+      if (value < curr.data) {
+        prev.node = curr;
+        prev.left = true;
+        curr = curr.left;
+      } else {
+        prev.node = curr;
+        prev.left = false;
+        curr = curr.right;
+      }
+    }
+  }
+
   return {
     root,
     insert,
+    deleteItem,
   };
 }
 
 const example = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const binarySearchTree = Tree(example);
 
-prettyPrint(binarySearchTree.root);
-binarySearchTree.insert(2);
+binarySearchTree.insert(0);
 binarySearchTree.insert(21);
-binarySearchTree.insert(1200);
+binarySearchTree.insert(222);
 prettyPrint(binarySearchTree.root);
+console.log("--------------------------------------");
+
+binarySearchTree.deleteItem(0);
+binarySearchTree.deleteItem(1);
+binarySearchTree.deleteItem(8);
+binarySearchTree.deleteItem(67);
+prettyPrint(binarySearchTree.root);
+console.log("--------------------------------------");
