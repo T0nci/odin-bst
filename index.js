@@ -267,11 +267,11 @@ function Tree(array) {
     }
 
     // Recursive case - -1 if no node to lose final comparison
-    const left = node.left ? height(node.left) : -1;
-    const right = node.right ? height(node.right) : -1;
+    const left = (node.left ? height(node.left) : -1) + 1;
+    const right = (node.right ? height(node.right) : -1) + 1;
 
     // Base case 2
-    return (left >= right ? left : right) + 1;
+    return left >= right ? left : right;
   }
 
   return {
