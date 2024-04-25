@@ -260,6 +260,20 @@ function Tree(array) {
     return levelOrderRecursive(callback, arr, q);
   }
 
+  function height(node) {
+    // Base case 1
+    if (node.left === null && node.right === null) {
+      return 0;
+    }
+
+    // Recursive case - -1 if no node to lose final comparison
+    const left = node.left ? height(node.left) : -1;
+    const right = node.right ? height(node.right) : -1;
+
+    // Base case 2
+    return (left >= right ? left : right) + 1;
+  }
+
   return {
     root,
     insert,
@@ -267,6 +281,7 @@ function Tree(array) {
     find,
     levelOrder,
     levelOrderRecursive,
+    height,
   };
 }
 
@@ -276,6 +291,7 @@ const binarySearchTree = Tree(example);
 binarySearchTree.insert(0);
 binarySearchTree.insert(21);
 binarySearchTree.insert(222);
+binarySearchTree.insert(1234);
 prettyPrint(binarySearchTree.root);
 console.log("--------------------------------------");
 
@@ -288,6 +304,7 @@ console.log("--------------------------------------");
 
 console.log(binarySearchTree.find(21));
 console.log(binarySearchTree.find(9999));
+console.log("--------------------------------------");
 
 console.log(binarySearchTree.levelOrder());
 console.log(
@@ -295,3 +312,7 @@ console.log(
     console.log(node.data);
   }),
 );
+console.log("--------------------------------------");
+
+console.log(`Height: ${binarySearchTree.height(binarySearchTree.find(9))}`);
+console.log("--------------------------------------");
