@@ -365,6 +365,20 @@ function Tree(array) {
     return !(differenceBetweenHeights > 1);
   }
 
+  function rebalance() {
+    if (isBalanced()) return false;
+
+    const sortedArr = inOrder();
+
+    const newRoot = assembleTree(sortedArr, 0, sortedArr.length - 1);
+
+    root.data = newRoot.data;
+    root.left = newRoot.left;
+    root.right = newRoot.right;
+
+    return true;
+  }
+
   return {
     root,
     insert,
@@ -378,6 +392,7 @@ function Tree(array) {
     height,
     depth,
     isBalanced,
+    rebalance,
   };
 }
 
@@ -438,4 +453,11 @@ console.log(binarySearchTree.isBalanced());
 binarySearchTree.insert(1290);
 prettyPrint(binarySearchTree.root);
 console.log(binarySearchTree.isBalanced());
+console.log("--------------------------------------");
+
+console.log(
+  binarySearchTree.rebalance(),
+  `isBalanced: ${binarySearchTree.isBalanced()}`,
+);
+prettyPrint(binarySearchTree.root);
 console.log("--------------------------------------");
