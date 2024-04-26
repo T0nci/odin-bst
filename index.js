@@ -274,7 +274,7 @@ function Tree(array) {
     if (typeof callback !== "function") {
       arr.push(node.data);
     } else {
-      callback(node.data);
+      callback(node);
     }
 
     inOrder(callback, node.right, arr);
@@ -294,7 +294,7 @@ function Tree(array) {
     if (typeof callback !== "function") {
       arr.push(node.data);
     } else {
-      callback(node.data);
+      callback(node);
     }
 
     preOrder(callback, node.left, arr);
@@ -320,7 +320,7 @@ function Tree(array) {
     if (typeof callback !== "function") {
       arr.push(node.data);
     } else {
-      callback(node.data);
+      callback(node);
     }
 
     return typeof callback !== "function" ? arr : true;
@@ -461,3 +461,5 @@ console.log(
 );
 prettyPrint(binarySearchTree.root);
 console.log("--------------------------------------");
+
+export { Tree, prettyPrint };
