@@ -357,6 +357,14 @@ function Tree(array) {
     return counter;
   }
 
+  function isBalanced() {
+    const differenceBetweenHeights = Math.abs(
+      height(root.left) - height(root.right),
+    );
+
+    return !(differenceBetweenHeights > 1);
+  }
+
   return {
     root,
     insert,
@@ -369,6 +377,7 @@ function Tree(array) {
     postOrder,
     height,
     depth,
+    isBalanced,
   };
 }
 
@@ -405,7 +414,7 @@ console.log(
 );
 console.log("--------------------------------------");
 
-console.log("prePostInOrder:");
+console.log("pre, post, 2 inOrder:");
 console.log(binarySearchTree.preOrder());
 console.log(binarySearchTree.postOrder());
 console.log(binarySearchTree.inOrder());
@@ -422,4 +431,11 @@ console.log("--------------------------------------");
 console.log(`Depth: ${binarySearchTree.depth(binarySearchTree.find(9))}`);
 console.log(`Depth: ${binarySearchTree.depth(binarySearchTree.find(7))}`);
 console.log(`Depth: ${binarySearchTree.depth(binarySearchTree.find(1234))}`);
+console.log("--------------------------------------");
+
+console.log("isBalanced:");
+console.log(binarySearchTree.isBalanced());
+binarySearchTree.insert(1290);
+prettyPrint(binarySearchTree.root);
+console.log(binarySearchTree.isBalanced());
 console.log("--------------------------------------");
