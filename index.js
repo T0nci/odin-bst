@@ -166,7 +166,7 @@ function Tree(array) {
           // Store it, delete it, replace the current number for deletion
           // with it
           const replacementNodeData = prev.node.data;
-          this.deleteItem(replacementNodeData);
+          deleteItem(replacementNodeData);
           curr.data = replacementNodeData;
         }
 
@@ -340,6 +340,23 @@ function Tree(array) {
     return left >= right ? left : right;
   }
 
+  function depth(node) {
+    let temp = root;
+    let counter = 0;
+
+    while (temp.data !== node.data) {
+      if (temp.data > node.data) {
+        temp = temp.left;
+      } else {
+        temp = temp.right;
+      }
+
+      counter += 1;
+    }
+
+    return counter;
+  }
+
   return {
     root,
     insert,
@@ -351,12 +368,14 @@ function Tree(array) {
     preOrder,
     postOrder,
     height,
+    depth,
   };
 }
 
 const example = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const binarySearchTree = Tree(example);
 
+console.log("insert:");
 binarySearchTree.insert(0);
 binarySearchTree.insert(21);
 binarySearchTree.insert(222);
@@ -364,6 +383,7 @@ binarySearchTree.insert(1234);
 prettyPrint(binarySearchTree.root);
 console.log("--------------------------------------");
 
+console.log("delete:");
 binarySearchTree.deleteItem(0);
 binarySearchTree.deleteItem(1);
 binarySearchTree.deleteItem(8);
@@ -371,10 +391,12 @@ binarySearchTree.deleteItem(67);
 prettyPrint(binarySearchTree.root);
 console.log("--------------------------------------");
 
+console.log("find:");
 console.log(binarySearchTree.find(21));
 console.log(binarySearchTree.find(9999));
 console.log("--------------------------------------");
 
+console.log("levelOrder:");
 console.log(binarySearchTree.levelOrder());
 console.log(
   binarySearchTree.levelOrderRecursive((node) => {
@@ -383,6 +405,7 @@ console.log(
 );
 console.log("--------------------------------------");
 
+console.log("prePostInOrder:");
 console.log(binarySearchTree.preOrder());
 console.log(binarySearchTree.postOrder());
 console.log(binarySearchTree.inOrder());
@@ -394,4 +417,9 @@ console.log(
 console.log("--------------------------------------");
 
 console.log(`Height: ${binarySearchTree.height(binarySearchTree.find(9))}`);
+console.log("--------------------------------------");
+
+console.log(`Depth: ${binarySearchTree.depth(binarySearchTree.find(9))}`);
+console.log(`Depth: ${binarySearchTree.depth(binarySearchTree.find(7))}`);
+console.log(`Depth: ${binarySearchTree.depth(binarySearchTree.find(1234))}`);
 console.log("--------------------------------------");
