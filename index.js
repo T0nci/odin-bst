@@ -260,6 +260,72 @@ function Tree(array) {
     return levelOrderRecursive(callback, arr, q);
   }
 
+  function inOrder(callback, node, arr) {
+    // Base case
+    if (node === null) return true;
+
+    // eslint-disable-next-line no-param-reassign
+    if (!(node instanceof Node)) node = root;
+    // eslint-disable-next-line no-param-reassign
+    if (!arr || !Array.isArray(arr)) arr = [];
+
+    inOrder(callback, node.left, arr);
+
+    if (typeof callback !== "function") {
+      arr.push(node.data);
+    } else {
+      callback(node.data);
+    }
+
+    inOrder(callback, node.right, arr);
+
+    return typeof callback !== "function" ? arr : true;
+  }
+
+  function preOrder(callback, node, arr) {
+    // Base case
+    if (node === null) return true;
+
+    // eslint-disable-next-line no-param-reassign
+    if (!(node instanceof Node)) node = root;
+    // eslint-disable-next-line no-param-reassign
+    if (!arr || !Array.isArray(arr)) arr = [];
+
+    if (typeof callback !== "function") {
+      arr.push(node.data);
+    } else {
+      callback(node.data);
+    }
+
+    preOrder(callback, node.left, arr);
+
+    preOrder(callback, node.right, arr);
+
+    return typeof callback !== "function" ? arr : true;
+  }
+
+  function postOrder(callback, node, arr) {
+    // Base case
+    if (node === null) return true;
+
+    // eslint-disable-next-line no-param-reassign
+    if (!(node instanceof Node)) node = root;
+    // eslint-disable-next-line no-param-reassign
+    if (!arr || !Array.isArray(arr)) arr = [];
+
+    postOrder(callback, node.left, arr);
+
+    postOrder(callback, node.right, arr);
+
+    if (typeof callback !== "function") {
+      arr.push(node.data);
+    } else {
+      callback(node.data);
+    }
+
+    return typeof callback !== "function" ? arr : true;
+  }
+
   function height(node) {
     // Base case 1
     if (node.left === null && node.right === null) {
@@ -281,6 +347,9 @@ function Tree(array) {
     find,
     levelOrder,
     levelOrderRecursive,
+    inOrder,
+    preOrder,
+    postOrder,
     height,
   };
 }
@@ -310,6 +379,16 @@ console.log(binarySearchTree.levelOrder());
 console.log(
   binarySearchTree.levelOrderRecursive((node) => {
     console.log(node.data);
+  }),
+);
+console.log("--------------------------------------");
+
+console.log(binarySearchTree.preOrder());
+console.log(binarySearchTree.postOrder());
+console.log(binarySearchTree.inOrder());
+console.log(
+  binarySearchTree.inOrder((node) => {
+    console.log(node);
   }),
 );
 console.log("--------------------------------------");
