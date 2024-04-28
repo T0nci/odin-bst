@@ -141,14 +141,14 @@ function Tree(array) {
             prev.node.right = null;
           }
         } else if (curr.left === null) {
-          // If right child
+          // If has right child
           if (prev.left) {
             prev.node.left = curr.right;
           } else {
             prev.node.right = curr.right;
           }
         } else if (curr.right === null) {
-          // If left child
+          // If has left child
           if (prev.left) {
             prev.node.left = curr.left;
           } else {
@@ -357,10 +357,31 @@ function Tree(array) {
     return counter;
   }
 
-  function isBalanced() {
-    const differenceBetweenHeights = Math.abs(
-      height(root.left) - height(root.right),
-    );
+  function isBalanced(node) {
+    // eslint-disable-next-line no-param-reassign
+    if (!node) node = root;
+
+    if (node.left === null && node.right === null) return true;
+
+    let heightLeft;
+    if (node.left !== null) {
+      const leftBalanced = isBalanced(node.left);
+      if (!leftBalanced) return false;
+      heightLeft = height(node.left) + 1; // "+ 1" for the edge connecting root and this node
+    } else {
+      heightLeft = 0;
+    }
+
+    let heightRight;
+    if (node.right !== null) {
+      const rightBalanced = isBalanced(node.right);
+      if (!rightBalanced) return false;
+      heightRight = height(node.right) + 1; // "+ 1" for the edge connecting node and left or right node
+    } else {
+      heightRight = 0;
+    }
+
+    const differenceBetweenHeights = Math.abs(heightLeft - heightRight);
 
     return !(differenceBetweenHeights > 1);
   }
@@ -435,7 +456,7 @@ console.log(binarySearchTree.postOrder());
 console.log(binarySearchTree.inOrder());
 console.log(
   binarySearchTree.inOrder((node) => {
-    console.log(node);
+    console.log(node.data);
   }),
 );
 console.log("--------------------------------------");
@@ -448,12 +469,21 @@ console.log(`Depth: ${binarySearchTree.depth(binarySearchTree.find(7))}`);
 console.log(`Depth: ${binarySearchTree.depth(binarySearchTree.find(1234))}`);
 console.log("--------------------------------------");
 
-console.log("isBalanced:");
-console.log(binarySearchTree.isBalanced());
-binarySearchTree.insert(1290);
-prettyPrint(binarySearchTree.root);
-console.log(binarySearchTree.isBalanced());
+const testTree = Tree([5, 10, 15]);
+testTree.insert(3);
+testTree.insert(6);
+testTree.insert(4);
+testTree.insert(14);
+testTree.insert(16);
+testTree.insert(13);
+testTree.insert(12);
+prettyPrint(testTree.root);
+console.log(testTree.isBalanced());
+
 console.log("--------------------------------------");
+
+binarySearchTree.insert(1290);
+console.log(binarySearchTree.isBalanced());
 
 console.log(
   binarySearchTree.rebalance(),

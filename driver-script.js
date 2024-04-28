@@ -8,7 +8,7 @@ for (let i = 0; i < numOfElements; i += 1) {
 }
 const binarySearchTree = Tree(arr);
 
-console.log(binarySearchTree.isBalanced());
+console.log(`Supposed to be balanced: ${binarySearchTree.isBalanced()}`);
 
 console.log("levelOrder:");
 binarySearchTree.levelOrder((node) => {
